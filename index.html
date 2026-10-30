@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#141210">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,212 +12,114 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" href="icons/icon-192.png">
 <title>Spiritual Siesta</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jost:wght@400;500;700;800&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#efe6d3;
-    --ink:#141210;
-    --red:#d8321f;
-    --blue:#1c4fa1;
-    --yellow:#f3bf1d;
-    --sans:Jost,"Futura",system-ui,sans-serif;
-    --fat:"Abril Fatface",Georgia,serif;
-    --type:"Special Elite","Courier New",monospace;
-    --top:max(14px,env(safe-area-inset-top));
+    --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --white:#f5f4f1;
+    --dim:rgba(245,244,241,.42);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overscroll-behavior:none}
   body{
-    background:var(--ink);color:var(--ink);
-    font-family:var(--sans);font-weight:500;
+    background:#000;color:var(--white);
+    font-family:var(--sans);font-weight:300;
     -webkit-font-smoothing:antialiased;overflow:hidden;
     -webkit-tap-highlight-color:transparent;
     -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   }
-  /* el campo amarillo del despertar */
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;opacity:0;
-    background:var(--yellow);transition:opacity 9s ease;
-  }
-  body.dawn::before{opacity:1}
-
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
-  /* banda negra: deja legible la barra de estado sobre papel y amarillo */
-  .band{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--ink);z-index:8}
-
   .screen{
-    position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;
-    padding:calc(var(--top) + 16px) 20px max(20px,env(safe-area-inset-bottom));
-    opacity:0;pointer-events:none;transition:opacity 1.6s ease;overflow:hidden;
+    position:fixed;inset:0;overflow:hidden;
+    opacity:0;pointer-events:none;transition:opacity 1.6s ease;
   }
   .screen.on{opacity:1;pointer-events:auto}
 
-  /* ---------- RECORTES ---------- */
-  .rz{display:inline-block;padding:.1em .2em;line-height:1}
-  .r0{background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:800}
-  .r1{background:var(--red);color:var(--paper);font-family:var(--fat)}
-  .r2{color:var(--ink);font-family:var(--type);box-shadow:inset 0 0 0 1.5px var(--ink)}
-  .r3{background:var(--yellow);color:var(--ink);font-family:var(--sans);font-weight:500}
-  .r4{background:var(--blue);color:var(--paper);font-family:var(--fat)}
-
-  /* ---------- INICIO ---------- */
-  #home{background:var(--paper);align-items:stretch}
-  #home::after{
-    content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:multiply;
-    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  .brand{font-size:clamp(22px,6.8vw,32px);font-weight:400;max-width:440px;width:100%;margin:0 auto}
-  .brand>span{display:block;white-space:nowrap}
-  .brand>span+span{margin:2px 0 0 18%}
-
-  .stage{position:relative;flex:1;min-height:0;width:100%;max-width:440px;margin:6px auto 12px}
-  .stage>*{position:absolute}
-
-  .disc{right:16px;top:9%;width:50%;aspect-ratio:1;background:var(--blue);border-radius:100% 0 0 0}
-  .rule{left:-10%;top:66%;width:125%;height:3px;background:var(--ink);transform:rotate(-24deg)}
-
-  /* el 11 son dos barras con su bandera */
-  .bar{background:var(--ink);width:15%}
-  .bar::before{
-    content:"";position:absolute;top:0;right:100%;width:70%;aspect-ratio:1;
-    clip-path:polygon(100% 0,100% 100%,0 100%);
-  }
-  .bar.a{left:15%;top:7%;height:72%}
-  .bar.a::before{background:var(--yellow)}
-  .bar.b{left:45%;top:0;height:61%}
-  .bar.b::before{background:var(--red)}
-
+  /* ---------- INICIO: toda la pantalla es el botón ---------- */
+  #home{background:#000}
   .start{
-    right:2%;bottom:6%;width:min(50vw,29dvh,215px);aspect-ratio:1;border-radius:50%;
-    background:var(--red);color:var(--paper);
-    font-weight:800;font-size:clamp(17px,5.2vw,22px);letter-spacing:.1em;
-    animation:pulse 10s ease-in-out infinite;
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
   }
-  .start:active{background:var(--ink)}
-  @keyframes pulse{0%,100%{transform:scale(.97)}40%{transform:scale(1.03)}}
-
-  .tag{
-    left:0;top:50%;padding:7px 11px;background:var(--paper);box-shadow:0 0 0 1.5px var(--ink);
-    font-family:var(--type);font-size:clamp(15px,4.4vw,19px);transform:rotate(-4deg);
+  .num{font-size:72px;font-weight:200;line-height:1;letter-spacing:-.01em}
+  .count{font-size:13px;color:var(--dim);min-height:1.2em}
+  .foot{
+    position:absolute;left:0;right:0;bottom:max(24px,env(safe-area-inset-bottom));
+    display:flex;justify-content:center;gap:28px;
   }
-  .count{
-    left:1%;bottom:2%;padding:5px 9px;box-shadow:0 0 0 2px var(--red);color:var(--red);
-    font-family:var(--type);font-size:13px;transform:rotate(5deg);min-height:1em;
-  }
-  .side{
-    right:-8px;top:0;height:100%;overflow:hidden;writing-mode:vertical-rl;white-space:nowrap;
-    font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
-  }
-
-  .foot{display:flex;justify-content:space-between;max-width:440px;width:100%;margin:0 auto}
-  .link{padding:11px 16px;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-  #open-install{background:var(--yellow);color:var(--ink);transform:rotate(2deg)}
+  .link{padding:8px;font-size:13px;color:var(--dim)}
 
   /* ---------- HOJAS ---------- */
-  .scrim{position:fixed;inset:0;z-index:9;background:rgba(20,18,16,.6);opacity:0;pointer-events:none;transition:opacity .3s}
+  .scrim{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.72);opacity:0;pointer-events:none;transition:opacity .4s}
   .scrim.on{opacity:1;pointer-events:auto}
   .sheet{
     position:fixed;left:0;right:0;bottom:0;z-index:10;max-width:520px;margin:0 auto;
-    background:var(--paper);border-top:5px solid var(--ink);
-    padding:14px 22px max(22px,env(safe-area-inset-bottom));
+    background:#111;padding:32px 28px max(28px,env(safe-area-inset-bottom));
     max-height:86dvh;overflow-y:auto;
-    transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.8,.2,1);
+    transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1);
   }
   .sheet.on{transform:none}
-  .grip{display:flex;gap:8px;justify-content:center;margin-bottom:18px}
-  .grip i{width:12px;height:12px;background:var(--red);border-radius:50%}
-  .grip i:nth-child(2){background:var(--blue);border-radius:0}
-  .grip i:nth-child(3){background:var(--yellow);border-radius:0;clip-path:polygon(50% 0,100% 100%,0 100%)}
-  .sheet h3{font-family:var(--fat);font-weight:400;font-size:34px;line-height:1.05;margin-bottom:16px}
-  .sheet ol{padding-left:22px;font-family:var(--type);font-size:15px;line-height:1.7}
+  .sheet ol{padding-left:20px;font-size:15px;line-height:1.9;color:var(--dim)}
+  .settings{display:flex;flex-direction:column;gap:28px}
+  .row{display:flex;flex-direction:column;gap:10px}
+  .label{font-size:13px;color:var(--dim)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px 20px}
+  .chips button{padding:4px 0;font-size:17px;color:var(--dim);transition:color .3s}
+  .chips button.on{color:var(--white)}
+  .hint{font-size:13px;line-height:1.5;color:var(--dim);max-height:0;overflow:hidden;opacity:0;transition:max-height .4s,opacity .4s}
+  .hint.on{max-height:80px;opacity:1}
+  .demo{display:block;margin-top:32px;padding:4px 0;font-size:13px;color:var(--dim)}
 
-  .settings{width:100%;display:flex;flex-direction:column;gap:20px}
-  .row{display:flex;flex-direction:column;gap:9px}
-  .label{font-size:24px;font-weight:800;letter-spacing:-.01em;text-transform:lowercase}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chips button{
-    padding:9px 13px;box-shadow:inset 0 0 0 2px var(--ink);
-    font-size:15px;font-weight:500;
-  }
-  .chips button:nth-child(odd){transform:rotate(-1.3deg)}
-  .chips button:nth-child(even){transform:rotate(1deg)}
-  .chips[data-key=ambient] button.on{background:var(--red);color:var(--paper);box-shadow:none}
-  .chips[data-key=wake] button.on{background:var(--blue);color:var(--paper);box-shadow:none}
-  .chips[data-key=voice] button.on{background:var(--yellow);box-shadow:none}
-  .hint{font-family:var(--type);font-size:13px;line-height:1.45;max-height:0;overflow:hidden;opacity:0;transition:max-height .4s,opacity .4s}
-  .hint.on{max-height:90px;opacity:1}
-
-  .demo{display:block;margin:24px auto 4px;padding:11px 16px;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transform:rotate(-1deg)}
-
-  /* ---------- SIESTA ---------- */
-  #session{background:var(--ink);justify-content:center}
-  .stop{position:absolute;top:calc(var(--top) + 12px);right:20px;padding:6px;color:var(--paper);opacity:.6;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
-  .orb-wrap{
-    position:relative;width:min(60vw,31dvh,280px);aspect-ratio:1;
-    box-shadow:0 0 0 2px var(--paper);transition:opacity 8s ease;
-  }
-  .orb-wrap.dim{opacity:.16}
-  .orb-wrap::before{content:"";position:absolute;right:-13%;top:-13%;width:40%;height:40%;background:var(--blue);border-radius:0 100% 0 0}
-  .orb-wrap::after{content:"";position:absolute;left:-11%;bottom:-11%;width:34%;height:34%;background:var(--yellow);clip-path:polygon(0 0,100% 100%,0 100%)}
-  .orb{position:absolute;inset:2%;z-index:1;border-radius:50%;background:var(--red);animation:breathe 10s ease-in-out infinite}
+  /* ---------- SIESTA: un punto ---------- */
+  #session{background:#000}
+  .orb-wrap{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px;transition:opacity 8s ease}
+  .orb-wrap.dim{opacity:.1}
+  .orb{width:100%;height:100%;border-radius:50%;background:var(--white);animation:breathe 10s ease-in-out infinite}
   /* 4 s inspirar · 6 s espirar ≈ 6 respiraciones por minuto */
-  @keyframes breathe{0%,100%{transform:scale(.5)}40%{transform:scale(1)}}
+  @keyframes breathe{0%,100%{transform:scale(.25)}40%{transform:scale(1)}}
   .caption{
-    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px 6px;
-    max-width:370px;min-height:5.6em;margin-top:52px;font-size:clamp(20px,5.6vw,25px);
-    opacity:0;transition:opacity .8s ease;
+    position:absolute;left:32px;right:32px;top:calc(50% + 72px);
+    max-width:340px;margin:0 auto;text-align:center;
+    font-size:17px;line-height:1.45;color:rgba(245,244,241,.72);
+    opacity:0;transition:opacity .9s ease;
   }
   .caption.show{opacity:1}
-  .caption .r0{box-shadow:inset 0 0 0 1.5px var(--paper)}
-  .caption .r2{color:var(--paper);box-shadow:inset 0 0 0 1.5px var(--paper)}
-  .time{position:absolute;bottom:max(30px,env(safe-area-inset-bottom));font-family:var(--type);font-size:15px;color:var(--paper);opacity:0;transition:opacity 1s}
-  .time.show{opacity:.7}
+  .stop,.time{position:absolute;left:0;right:0;text-align:center;font-size:13px;color:var(--dim);opacity:0;pointer-events:none;transition:opacity .8s}
+  .stop{bottom:max(24px,env(safe-area-inset-bottom));padding:8px}
+  .time{top:max(32px,env(safe-area-inset-top));font-variant-numeric:tabular-nums}
+  .stop.show{opacity:1;pointer-events:auto}
+  .time.show{opacity:1}
 
-  /* ---------- DESPERTAR ---------- */
-  #wake{justify-content:center;gap:14px;align-items:center;text-align:center}
+  /* ---------- DESPERTAR: el punto crece hasta ser la luz ---------- */
+  #wake{color:#000}
   .sun{
-    position:absolute;left:50%;bottom:0;width:max(125vw,620px);aspect-ratio:1;margin-left:calc(max(125vw,620px) / -2);
-    border-radius:50%;background:var(--red);
-    transform:translateY(105%);transition:transform 0s 1.6s;
+    position:absolute;left:50%;top:50%;width:200vmax;height:200vmax;margin:-100vmax;
+    border-radius:50%;background:var(--white);
+    transform:scale(.01);transition:transform 0s 1.6s;
   }
-  body.dawn .sun{transform:translateY(46%);transition:transform 13s cubic-bezier(.2,.6,.2,1)}
-  .back{position:relative;font-family:var(--fat);font-weight:400;font-size:clamp(66px,21vw,120px);line-height:1}
-  .back span{display:block;width:fit-content;margin:0 auto;padding:.04em .16em .1em;background:var(--paper)}
-  .back span:first-child{transform:rotate(-4deg) translateX(-12%)}
-  .back span:last-child{margin-top:-.08em;transform:rotate(2deg)}
-  .sub{position:relative;margin-top:10px;padding:7px 11px;background:var(--paper);font-family:var(--type);font-size:17px;transform:rotate(-1.5deg)}
-  #wake .count{position:relative;left:auto;bottom:auto;background:var(--paper)}
-  .pill{position:relative;margin-top:22px;padding:15px 24px;background:var(--ink);color:var(--paper);font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-  .pill:active{background:var(--blue)}
+  body.dawn .sun{transform:scale(1);transition:transform 11s cubic-bezier(.55,0,.35,1)}
+  .wake-ui{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    opacity:0;transition:opacity 0s;
+  }
+  body.dawn .wake-ui{opacity:1;transition:opacity 2s 8s}
+  .back{font-size:34px;font-weight:200}
+  #wake .count{color:rgba(0,0,0,.45)}
+  .pill{position:absolute;left:0;right:0;bottom:max(24px,env(safe-area-inset-bottom));padding:8px;font-size:13px;color:rgba(0,0,0,.55)}
 
-  @media (prefers-reduced-motion:reduce){.start{animation:none}}
+  @media (prefers-reduced-motion:reduce){.orb{animation-duration:20s}}
 </style>
 </head>
 <body>
 
-<div class="band"></div>
-
 <!-- INICIO -->
 <section id="home" class="screen on">
-  <h1 class="brand" aria-label="Spiritual Siesta">Spiritual Siesta</h1>
-
-  <div class="stage">
-    <div class="disc"></div>
-    <div class="rule"></div>
-    <div class="bar a"></div>
-    <div class="bar b"></div>
-    <p class="side" aria-hidden="true">no hacer nada · no hacer nada · no hacer nada · no hacer nada</p>
-    <p class="tag">minutos que son tuyos</p>
-    <button id="start" class="start" aria-label="Empezar siesta">EMPEZAR</button>
-    <p class="count" id="count"></p>
-  </div>
-
+  <button id="start" class="start" aria-label="Empezar siesta de 11 minutos">
+    <span class="num">11</span>
+    <span class="count" id="count"></span>
+  </button>
   <div class="foot">
-    <button id="open-settings" class="link">Ajustes</button>
-    <button id="open-install" class="link" hidden>Instalar</button>
+    <button id="open-settings" class="link">ajustes</button>
+    <button id="open-install" class="link" hidden>instalar</button>
   </div>
 </section>
 
@@ -225,45 +127,42 @@
 
 <!-- AJUSTES -->
 <aside id="sheet-settings" class="sheet">
-  <div class="grip"><i></i><i></i><i></i></div>
   <div class="settings">
     <div class="row">
-      <span class="label">Fondo</span>
+      <span class="label">fondo</span>
       <div class="chips" data-key="ambient">
-        <button data-v="none">Silencio</button>
-        <button data-v="rosa">Ruido rosa</button>
-        <button data-v="mar">Mar de fondo</button>
-        <button data-v="olas">Olas</button>
-        <button data-v="theta">Theta · 5 Hz</button>
+        <button data-v="none">silencio</button>
+        <button data-v="rosa">ruido rosa</button>
+        <button data-v="mar">mar de fondo</button>
+        <button data-v="olas">olas</button>
+        <button data-v="theta">theta 5 Hz</button>
       </div>
       <p class="hint" id="hint-theta">Con auriculares. Cada oído recibe un tono distinto y el cerebro percibe un pulso lento de 5&nbsp;Hz que no se oye como nota.</p>
     </div>
     <div class="row">
-      <span class="label">Despertar</span>
+      <span class="label">despertar</span>
       <div class="chips" data-key="wake">
-        <button data-v="cuenco">Cuenco</button>
-        <button data-v="gong">Gong</button>
-        <button data-v="campanilla">Campanilla</button>
+        <button data-v="cuenco">cuenco</button>
+        <button data-v="gong">gong</button>
+        <button data-v="campanilla">campanilla</button>
       </div>
     </div>
     <div class="row">
-      <span class="label">Voz</span>
+      <span class="label">voz</span>
       <div class="chips" data-key="voice">
-        <button data-v="on">Con voz</button>
-        <button data-v="off">Sin voz</button>
+        <button data-v="on">con voz</button>
+        <button data-v="off">sin voz</button>
       </div>
     </div>
   </div>
 
-  <button id="demo" class="demo">Prueba rápida · 90 s</button>
+  <button id="demo" class="demo">prueba rápida · 90 s</button>
 </aside>
 
 <!-- INSTALAR EN IPHONE -->
 <aside id="sheet-install" class="sheet">
-  <div class="grip"><i></i><i></i><i></i></div>
-  <h3>Llévala a tu inicio</h3>
   <ol>
-    <li>Pulsa el botón Compartir de Safari.</li>
+    <li>Pulsa Compartir en Safari.</li>
     <li>Elige «Añadir a pantalla de inicio».</li>
     <li>Abre Siesta desde su icono.</li>
   </ol>
@@ -271,19 +170,20 @@
 
 <!-- SIESTA -->
 <section id="session" class="screen">
-  <button id="stop" class="stop">Terminar</button>
+  <p class="time" id="time">11:00</p>
   <div class="orb-wrap" id="orb-wrap"><div class="orb"></div></div>
   <p class="caption" id="caption"></p>
-  <p class="time" id="time">11:00</p>
+  <button id="stop" class="stop">terminar</button>
 </section>
 
 <!-- DESPERTAR -->
 <section id="wake" class="screen">
   <div class="sun"></div>
-  <h2 class="back"><span>De</span><span>vuelta.</span></h2>
-  <p class="sub">Has parado once minutos.</p>
-  <p class="count" id="wake-count"></p>
-  <button id="return" class="pill">Volver al día</button>
+  <div class="wake-ui">
+    <h2 class="back">De vuelta.</h2>
+    <p class="count" id="wake-count"></p>
+    <button id="return" class="pill">volver al día</button>
+  </div>
 </section>
 
 <script>
@@ -554,31 +454,18 @@ function show(id) {
 
 let session = null, preview = null, lock = null;
 
-/* Recortes de papel: cada trozo con su tipo, su color y su torcedura */
-function cutouts(pieces, tilt) {
-  return pieces.map((s, i) => {
-    const sp = document.createElement('span');
-    sp.className = `rz r${(i * 3 + s.length) % 5}`;
-    sp.style.transform = `rotate(${((i * 7 + 3) % 11 - 5) * tilt}deg)`;
-    sp.textContent = s;
-    return sp;
-  });
-}
-
 function setCaption(t) {
   const c = $('caption');
   c.classList.remove('show');
-  setTimeout(() => {
-    c.replaceChildren(...cutouts(t.split(' ').filter(Boolean), 0.5));
-    if (t) c.classList.add('show');
-  }, 450);
+  setTimeout(() => { c.textContent = t; if (t) c.classList.add('show'); }, 450);
 }
 
 let timeTimer;
 function flashTime(ms = 3500) {
-  $('time').classList.add('show');
+  const ui = [$('time'), $('stop')];
+  ui.forEach(el => el.classList.add('show'));
   clearTimeout(timeTimer);
-  timeTimer = setTimeout(() => $('time').classList.remove('show'), ms);
+  timeTimer = setTimeout(() => ui.forEach(el => el.classList.remove('show')), ms);
 }
 
 async function startSession(total) {
@@ -673,7 +560,7 @@ function recordNap() {
 }
 function renderCount() {
   const d = JSON.parse(localStorage.getItem('ss_log') || '{"n":0}');
-  $('count').textContent = d.n ? `Siesta nº ${d.n + 1}` : 'Tu primera siesta';
+  $('count').textContent = d.n ? '' : 'toca para empezar';
 }
 
 /* Previsualizar sonidos desde los ajustes */
@@ -766,13 +653,6 @@ document.addEventListener('visibilitychange', async () => {
 if ('serviceWorker' in navigator && /^(https:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
-
-const brand = document.querySelector('.brand');
-brand.replaceChildren(...brand.textContent.split(' ').map(word => {
-  const line = document.createElement('span');
-  line.append(...cutouts([...word], 0.8));
-  return line;
-}));
 
 renderChips();
 renderCount();
