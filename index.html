@@ -2,8 +2,15 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#14100d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Siesta">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
 <title>Spiritual Siesta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,12 +26,13 @@
     --sans:Inter,system-ui,-apple-system,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
+  html,body{height:100%;overscroll-behavior:none}
   body{
     background:var(--bg);color:var(--ink);
     font-family:var(--sans);font-weight:300;
     -webkit-font-smoothing:antialiased;overflow:hidden;
     -webkit-tap-highlight-color:transparent;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   }
   /* amanecer al despertar */
   body::before{
@@ -46,8 +54,9 @@
   .brand{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
 
   /* ---------- HOME ---------- */
-  #home{justify-content:space-between;gap:28px}
-  .hero{text-align:center;margin-top:4vh}
+  #home{justify-content:space-between}
+  .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px}
+  .hero{text-align:center}
   .num{font-family:var(--serif);font-weight:300;font-size:clamp(120px,30vw,180px);line-height:.85;letter-spacing:-.02em;font-feature-settings:"lnum" 1}
   .tag{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--mute);margin-top:6px}
 
@@ -62,12 +71,32 @@
     box-shadow:0 0 60px 4px rgba(233,164,106,.25);
     animation:halo 6s ease-in-out infinite;
   }
-  .start:hover{border-color:rgba(243,233,220,.4);transform:scale(1.03)}
+  .start:active{border-color:rgba(243,233,220,.4);transform:scale(.96)}
   @keyframes halo{0%,100%{opacity:.35}50%{opacity:1}}
 
   .count{font-size:12px;letter-spacing:.08em;color:var(--mute);min-height:1em;text-align:center}
 
-  .settings{width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px}
+  .foot{display:flex;gap:28px;min-height:20px}
+  .foot[hidden]{display:none}
+  .link{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);padding:6px}
+
+  /* ---------- HOJAS ---------- */
+  .scrim{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .4s}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .sheet{
+    position:fixed;left:0;right:0;bottom:0;z-index:10;max-width:520px;margin:0 auto;
+    background:#1f1915;border-radius:24px 24px 0 0;
+    padding:12px 24px max(24px,env(safe-area-inset-bottom));
+    max-height:86dvh;overflow-y:auto;
+    transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .sheet.on{transform:none}
+  .grip{width:36px;height:4px;border-radius:2px;background:var(--faint);margin:0 auto 22px}
+  .sheet h3{font-family:var(--serif);font-weight:300;font-size:30px;margin-bottom:20px}
+  .sheet ol{padding-left:18px;font-size:15px;line-height:1.7;color:var(--mute)}
+  .sheet .demo{display:block;margin:26px auto 4px}
+
+  .settings{width:100%;display:flex;flex-direction:column;gap:20px}
   .row{display:flex;flex-direction:column;gap:8px}
   .label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--mute)}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -109,7 +138,7 @@
   .back{font-family:var(--serif);font-weight:300;font-size:clamp(52px,13vw,80px);line-height:1}
   .sub{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--mute)}
   .pill{margin-top:28px;padding:14px 28px;border-radius:999px;border:1px solid rgba(243,233,220,.4);font-size:12px;letter-spacing:.2em;text-transform:uppercase;transition:background .5s,color .5s}
-  .pill:hover{background:var(--ink);color:var(--bg)}
+  .pill:active{background:var(--ink);color:var(--bg)}
 </style>
 </head>
 <body>
@@ -118,14 +147,26 @@
 <section id="home" class="screen on">
   <p class="brand">Spiritual Siesta</p>
 
-  <div class="hero">
-    <div class="num">11</div>
-    <p class="tag">minutos que son tuyos</p>
+  <div class="center">
+    <div class="hero">
+      <div class="num">11</div>
+      <p class="tag">minutos que son tuyos</p>
+    </div>
+    <button id="start" class="start" aria-label="Empezar siesta">Empezar</button>
+    <p class="count" id="count"></p>
   </div>
 
-  <button id="start" class="start" aria-label="Empezar siesta">Empezar</button>
-  <p class="count" id="count"></p>
+  <div class="foot">
+    <button id="open-settings" class="link">Ajustes</button>
+    <button id="open-install" class="link" hidden>Instalar</button>
+  </div>
+</section>
 
+<div id="scrim" class="scrim"></div>
+
+<!-- AJUSTES -->
+<aside id="sheet-settings" class="sheet">
+  <div class="grip"></div>
   <div class="settings">
     <div class="row">
       <span class="label">Fondo</span>
@@ -156,7 +197,18 @@
   </div>
 
   <button id="demo" class="demo">Prueba rápida · 90 s</button>
-</section>
+</aside>
+
+<!-- INSTALAR EN IPHONE -->
+<aside id="sheet-install" class="sheet">
+  <div class="grip"></div>
+  <h3>Llévala a tu inicio</h3>
+  <ol>
+    <li>Pulsa el botón Compartir de Safari.</li>
+    <li>Elige «Añadir a pantalla de inicio».</li>
+    <li>Abre Siesta desde su icono.</li>
+  </ol>
+</aside>
 
 <!-- SIESTA -->
 <section id="session" class="screen">
@@ -384,20 +436,32 @@ function pickVoice() {
   return es.find(v => /es[-_]ES/i.test(v.lang)) || es[0] || null;
 }
 
+/* La locución pasa por Web Audio: iOS bloquea Audio.play() fuera de un
+   toque del usuario, y el AudioContext ya queda abierto al pulsar Empezar */
+const voiceBuffers = {};
+function loadVoice(src) {
+  return voiceBuffers[src] ??= fetch(src)
+    .then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+    .then(b => ctx.decodeAudioData(b))
+    .catch(() => null);
+}
+
 let voiceEl = null;
-function playFile(src) {
+async function playFile(src) {
+  const buf = await loadVoice(src);
+  if (!buf) return false;
   return new Promise(res => {
-    const a = voiceEl = new Audio(src);
-    a.volume = 0.95;
-    a.onended = () => res(true);
-    a.onerror = () => res(false);
-    a.play().catch(() => res(false));
+    const s = voiceEl = ctx.createBufferSource();
+    s.buffer = buf;
+    s.connect(gain(0.95)).connect(master);
+    s.onended = () => res(true);
+    s.start();
   });
 }
 
 function stopVoice() {
   window.speechSynthesis?.cancel();
-  if (voiceEl) { voiceEl.pause(); voiceEl = null; }
+  if (voiceEl) { try { voiceEl.stop(); } catch (e) {} voiceEl = null; }
 }
 
 async function say(text, i) {
@@ -584,15 +648,51 @@ document.querySelectorAll('.chips').forEach(group => {
     S[key] = b.dataset.v; saveSettings(); renderChips();
     if (key === 'ambient') previewAmbient(S.ambient);
     if (key === 'wake') previewWake(S.wake);
-    if (key === 'voice' && S.voice === 'on') { stopVoice(); say(INTRO[5][0], 5); }
+    if (key === 'voice' && S.voice === 'on') { ensureCtx(); stopVoice(); say(INTRO[5][0], 5); }
   });
 });
 
 $('start').onclick = () => startSession(FULL);
-$('demo').onclick = () => startSession(DEMO);
+$('demo').onclick = () => { closeSheets(); startSession(DEMO); };
 $('stop').onclick = e => { e.stopPropagation(); endSession(); };
 $('session').onclick = () => flashTime();
 $('return').onclick = endSession;
+
+/* Hojas */
+function openSheet(id) { $(id).classList.add('on'); $('scrim').classList.add('on'); }
+function closeSheets() {
+  document.querySelectorAll('.sheet').forEach(s => s.classList.remove('on'));
+  $('scrim').classList.remove('on');
+}
+$('open-settings').onclick = () => openSheet('sheet-settings');
+$('scrim').onclick = closeSheets;
+
+/* Instalación */
+const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+let installPrompt = null;
+if (!installed && isIOS) $('open-install').hidden = false;
+addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  installPrompt = e;
+  $('open-install').hidden = false;
+});
+addEventListener('appinstalled', () => { $('open-install').hidden = true; });
+$('open-install').onclick = () => {
+  if (installPrompt) installPrompt.prompt();
+  else openSheet('sheet-install');
+};
+
+/* Al volver a la app durante una siesta, recuperar audio y pantalla activa */
+document.addEventListener('visibilitychange', async () => {
+  if (document.hidden || !session || session.done) return;
+  ctx.resume();
+  try { lock = await navigator.wakeLock?.request('screen'); } catch (e) {}
+});
+
+if ('serviceWorker' in navigator && /^(https:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 
 renderChips();
 renderCount();
