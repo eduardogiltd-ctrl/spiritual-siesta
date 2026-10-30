@@ -1,7 +1,7 @@
 /* Deja la app disponible sin conexión.
    Lo propio va primero a la red (así los cambios llegan solos) y las
    fuentes salen de la caché. */
-const CACHE = 'siesta-v1';
+const CACHE = 'siesta-v2';
 const voz = Array.from({ length: 14 }, (_, i) => `voz/${String(i + 1).padStart(2, '0')}.wav`);
 const SHELL = ['./', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', ...voz];
 
