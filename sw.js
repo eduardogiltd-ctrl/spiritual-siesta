@@ -1,9 +1,9 @@
 /* Deja la app disponible sin conexión.
    Lo propio va primero a la red (así los cambios llegan solos) y las
    fuentes salen de la caché. */
-const CACHE = 'siesta-v3';
+const CACHE = 'siesta-v4';
 const voz = Array.from({ length: 14 }, (_, i) => `voz/${String(i + 1).padStart(2, '0')}.wav`);
-const SHELL = ['./', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', ...voz];
+const SHELL = ['./', 'wada.js', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', ...voz];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
